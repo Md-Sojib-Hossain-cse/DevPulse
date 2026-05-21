@@ -7,6 +7,7 @@ const config = {
   node_env: process.env.NODE_ENV,
   port: process.env.PORT,
   db_connection_string: process.env.DB_CONNECTION_STRING,
+  bcrypt_salt_round: process.env.BCRYPT_SALT_ROUND,
 };
 
 export default config;

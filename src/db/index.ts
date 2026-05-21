@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 import config from "../config";
 
-const pool = new Pool({
+export const pool = new Pool({
   connectionString: config.db_connection_string,
 });
 
@@ -10,10 +10,10 @@ const initDB = async () => {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users(
       id SERIAL UNIQUE PRIMARY KEY,
-      name VARCHAR(20) NOT NULL,
-      email VARCHAR(20) UNIQUE NOT NULL,
+      name VARCHAR(50) NOT NULL,
+      email VARCHAR(50) UNIQUE NOT NULL,
       password VARCHAR(255) NOT NULL,
-      role VARCHAR(10) NOT NULL DEFAULT 'contributor' 
+      role VARCHAR(30) DEFAULT 'contributor' 
         CHECK (role IN ('contributor', 'maintainer')),
       created_at TIMESTAMP DEFAULT NOW(),
       updated_at TIMESTAMP DEFAULT NOW()

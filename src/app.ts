@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
-    message: "Hello world!",
+    message: "Welcome to DevPulse!",
   });
 });
 
