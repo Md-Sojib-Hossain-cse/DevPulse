@@ -4,3 +4,9 @@ export type TResponse<T> = {
   message: string;
   data?: T;
 };
+
+export type TJwtPayload = {
+  id: number;
+  name: string;
+  role: "contributor" | "maintainer";
+};

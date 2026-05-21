@@ -1,9 +1,11 @@
 import config from "../../config";
 import { pool } from "../../db";
+import AppError from "../../utility/appError";
 import type { TAuth } from "./auth.interface";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-const registerUserIntoDB = async (payload: TAuth) => {
+const signUpUserIntoDB = async (payload: TAuth) => {
   const { name, email, password, role } = payload;
   const encodedPassword = await bcrypt.hash(
     password,
@@ -26,6 +28,44 @@ const registerUserIntoDB = async (payload: TAuth) => {
   return result;
 };
 
+const loginUserFromDB = async (payload: Pick<TAuth, "email" | "password">) => {
+  const { email, password } = payload;
+  const userData = await pool.query(
+    `
+    SELECT * FROM users
+    WHERE email=$1
+    `,
+    [email],
+  );
+
+  const user = userData.rows[0];
+
+  if (!user) {
+    throw new AppError(404, "User Not Found!");
+  }
+
+  const decoded = await bcrypt.compare(password, user?.password);
+
+  if (!decoded) {
+    throw new AppError(401, "Unauthorized!");
+  }
+
+  const jwtPayload = {
+    id: user.id,
+    name: user.name,
+    role: user.role,
+  };
+
+  const accessToken = jwt.sign(jwtPayload, config.private_key as string, {
+    expiresIn: "1d",
+  });
+
+  delete user.password;
+
+  return { accessToken, user };
+};
+
 export const authService = {
-  registerUserIntoDB,
+  signUpUserIntoDB,
+  loginUserFromDB,
 };
