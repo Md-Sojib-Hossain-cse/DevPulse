@@ -4,6 +4,7 @@ import globalErrorHandler from "./middlewares/globalErrorHandler";
 import { authRoutes } from "./modules/auth/auth.routes";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { issueRoutes } from "./modules/issues/issues.route";
 
 const app = express();
 
@@ -26,6 +27,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/issues", issueRoutes);
 
 app.use(notFound);
 

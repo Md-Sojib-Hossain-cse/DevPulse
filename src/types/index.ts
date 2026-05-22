@@ -10,3 +10,5 @@ export type TJwtPayload = {
   name: string;
   role: "contributor" | "maintainer";
 };
+
+export type TRole = "contributor" | "maintainer";
