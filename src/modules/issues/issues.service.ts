@@ -85,8 +85,21 @@ const getSingleIssueFromDB = async (id: string) => {
   return result;
 };
 
+const deleteIssueFromDB = async (id: string) => {
+  const result = await pool.query(
+    `
+    DELETE FROM issues
+    WHERE id=$1
+    `,
+    [id],
+  );
+
+  return result.rowCount;
+};
+
 export const issuesService = {
   createIssueIntoDB,
   getAllIssuesFromDB,
   getSingleIssueFromDB,
+  deleteIssueFromDB,
 };
