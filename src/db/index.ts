@@ -35,6 +35,7 @@ const initDB = async () => {
       updated_at TIMESTAMP DEFAULT NOW()
       )
       `);
+    console.log("Database connected Successfully!");
   } catch (error) {
     throw new Error("Cannot connect to the database!");
   }
