@@ -54,7 +54,39 @@ const getAllIssuesFromDB = async (query: TIssueQuery) => {
   return result;
 };
 
+const getSingleIssueFromDB = async (id: string) => {
+  const issueData = await pool.query(
+    `
+    SELECT * FROM issues
+    WHERE id=$1
+    `,
+    [id],
+  );
+
+  if (!issueData.rows.length) {
+    return null;
+  }
+
+  const userData = await pool.query(
+    `
+  SELECT id , name , role FROM users
+  WHERE id=$1
+  `,
+    [issueData.rows[0].reporter_id],
+  );
+
+  const result = {
+    ...issueData.rows[0],
+    reporter: userData.rows[0],
+  };
+
+  delete result.reporter_id;
+
+  return result;
+};
+
 export const issuesService = {
   createIssueIntoDB,
   getAllIssuesFromDB,
+  getSingleIssueFromDB,
 };

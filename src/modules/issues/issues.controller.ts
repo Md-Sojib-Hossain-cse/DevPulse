@@ -41,6 +41,35 @@ const getAllIssues = async (
     return sendResponse(res, {
       statusCode: 200,
       success: true,
+      message: "Issues fetched successfully!",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getSingleIssue = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const result = await issuesService.getSingleIssueFromDB(id as string);
+
+    if (!result) {
+      return sendResponse(res, {
+        statusCode: 404,
+        success: false,
+        message: "Issue Not Found!",
+        data: null,
+      });
+    }
+
+    return sendResponse(res, {
+      statusCode: 200,
+      success: true,
       message: "Issue fetched successfully!",
       data: result,
     });
@@ -52,4 +81,5 @@ const getAllIssues = async (
 export const issuesController = {
   createIssue,
   getAllIssues,
+  getSingleIssue,
 };
