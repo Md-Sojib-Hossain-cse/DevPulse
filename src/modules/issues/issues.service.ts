@@ -92,7 +92,7 @@ const updateIssuesOnDB = async (
   payload: Partial<TIssue>,
   userInfo: TJwtPayload,
 ) => {
-  const { title, description, type, status, reporter_id } = payload;
+  const { title, description, type, status } = payload;
 
   if (userInfo.role === "maintainer") {
     const result = await pool.query(
@@ -105,7 +105,7 @@ const updateIssuesOnDB = async (
       [title, description, type, status, id],
     );
     return result.rows[0];
-  } else if (userInfo.role === "contributor" && userInfo.id === reporter_id) {
+  } else if (userInfo.role === "contributor") {
     const result = await pool.query(
       `
       UPDATE issues
