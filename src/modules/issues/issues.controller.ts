@@ -97,6 +97,7 @@ const updateIssues = async (
         statusCode: 404,
         success: false,
         message: "Issue Not Found!",
+        data: null,
       });
     }
 
@@ -121,6 +122,7 @@ const deleteIssue = async (req: Request, res: Response, next: NextFunction) => {
         statusCode: 404,
         success: false,
         message: "Issue Not Found!",
+        data: null,
       });
     }
 
@@ -128,6 +130,7 @@ const deleteIssue = async (req: Request, res: Response, next: NextFunction) => {
       statusCode: 200,
       success: true,
       message: "Issue deleted successfully!",
+      data: null,
     });
   } catch (error) {
     next(error);
