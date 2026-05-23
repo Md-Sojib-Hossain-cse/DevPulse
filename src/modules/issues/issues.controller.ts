@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { issuesService } from "./issues.service";
 import sendResponse from "../../utility/sendResponse";
+import type { TJwtPayload } from "../../types";
 
 const createIssue = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -78,6 +79,38 @@ const getSingleIssue = async (
   }
 };
 
+const updateIssues = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const result = await issuesService.updateIssuesOnDB(
+      id as string,
+      req.body,
+      req.user as TJwtPayload,
+    );
+
+    if (!result) {
+      return sendResponse(res, {
+        statusCode: 404,
+        success: false,
+        message: "Issue Not Found!",
+      });
+    }
+
+    return sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "Issue updated successfully!",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const deleteIssue = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
@@ -105,5 +138,6 @@ export const issuesController = {
   createIssue,
   getAllIssues,
   getSingleIssue,
+  updateIssues,
   deleteIssue,
 };

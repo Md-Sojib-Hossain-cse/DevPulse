@@ -1,4 +1,6 @@
 import { pool } from "../../db";
+import type { TJwtPayload } from "../../types";
+import AppError from "../../utility/appError";
 import type { TIssue, TIssueQuery } from "./issues.interface";
 
 const createIssueIntoDB = async (
@@ -85,6 +87,42 @@ const getSingleIssueFromDB = async (id: string) => {
   return result;
 };
 
+const updateIssuesOnDB = async (
+  id: string,
+  payload: Partial<TIssue>,
+  userInfo: TJwtPayload,
+) => {
+  const { title, description, type, status, reporter_id } = payload;
+
+  if (userInfo.role === "maintainer") {
+    const result = await pool.query(
+      `
+      UPDATE issues
+      SET title=COALESCE($1,issues.title),description=COALESCE($2,issues.description),type=COALESCE($3,issues.type),status=COALESCE($4,issues.status),updated_at = NOW()
+      WHERE id=$5
+      RETURNING *
+      `,
+      [title, description, type, status, id],
+    );
+    return result.rows[0];
+  } else if (userInfo.role === "contributor" && userInfo.id === reporter_id) {
+    const result = await pool.query(
+      `
+      UPDATE issues
+      SET title=COALESCE($1,issues.title),description=COALESCE($2,issues.description),type=COALESCE($3,issues.type),updated_at = NOW()
+      WHERE id=$4 AND status=$5 AND reporter_id=$6
+      RETURNING *
+      `,
+      [title, description, type, id, "open", userInfo.id],
+    );
+    if (!result.rows[0]) {
+      throw new AppError(403, "You can only update your own open issues!");
+    }
+    return result.rows[0];
+  } else {
+    throw new AppError(403, "You can only update your own open issues");
+  }
+};
 const deleteIssueFromDB = async (id: string) => {
   const result = await pool.query(
     `
@@ -101,5 +139,6 @@ export const issuesService = {
   createIssueIntoDB,
   getAllIssuesFromDB,
   getSingleIssueFromDB,
+  updateIssuesOnDB,
   deleteIssueFromDB,
 };

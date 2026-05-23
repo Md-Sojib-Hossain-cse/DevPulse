@@ -17,7 +17,7 @@ const auth = (...roles: TRole[]) => {
       const decodedToken = jwt.verify(token, config.private_key as string);
 
       if (!decodedToken) {
-        throw new AppError(403, "Forbidden!");
+        throw new AppError(401, "Unauthorized!");
       }
 
       const userData = await pool.query(
@@ -41,7 +41,7 @@ const auth = (...roles: TRole[]) => {
       req.user = decodedToken as JwtPayload;
       next();
     } catch (error) {
-      next(error);
+      throw new AppError(401, "Invalid or expired token!");
     }
   };
 };

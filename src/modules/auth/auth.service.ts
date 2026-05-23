@@ -41,13 +41,13 @@ const loginUserFromDB = async (payload: Pick<TAuth, "email" | "password">) => {
   const user = userData.rows[0];
 
   if (!user) {
-    throw new AppError(404, "User Not Found!");
+    throw new AppError(401, "Invalid Credentials!");
   }
 
   const decoded = await bcrypt.compare(password, user?.password);
 
   if (!decoded) {
-    throw new AppError(401, "Unauthorized!");
+    throw new AppError(401, "Invalid Credentials!");
   }
 
   const jwtPayload = {
