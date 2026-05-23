@@ -22,7 +22,7 @@ https://devpulse-livid-iota.vercel.app
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - Node.js (v24+)
 - Express.js
@@ -33,7 +33,7 @@ https://devpulse-livid-iota.vercel.app
 
 ---
 
-## 👥 User Roles
+## User Roles
 
 ### Contributor
 
@@ -51,7 +51,7 @@ https://devpulse-livid-iota.vercel.app
 
 ---
 
-## 🔐 Authentication Flow
+## Authentication Flow
 
 1. User logs in
 2. Server validates credentials
@@ -62,7 +62,7 @@ https://devpulse-livid-iota.vercel.app
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
 ### Users Table
 
@@ -87,7 +87,7 @@ https://devpulse-livid-iota.vercel.app
 
 ---
 
-## 🌐 API Endpoints
+## API Endpoints
 
 ### 🔹 Auth
 
@@ -125,7 +125,7 @@ Delete issue (maintainer only)
 
 ---
 
-## 📊 Issue Update Rules
+## Issue Update Rules
 
 - Maintainer → can update any issue
 - Contributor → can update own issue only if status = `open`
@@ -134,7 +134,7 @@ Delete issue (maintainer only)
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ```bash
 # Clone repository
@@ -154,7 +154,7 @@ PRIVATE_KEY=your_private_key
 npm run dev
 ```
 
-## 🧠 Key Design Decisions
+## Key Design Decisions
 
 - Raw SQL used (no ORM as per requirement)
 - No JOINs used (manual batching for relations)
@@ -164,7 +164,7 @@ npm run dev
 
 ---
 
-## 🚨 Error Response Format
+## Error Response Format
 
 ```json
 {
@@ -174,7 +174,7 @@ npm run dev
 }
 ```
 
-## ✅ Success Response Format
+## Success Response Format
 
 ```json
 {
@@ -184,14 +184,14 @@ npm run dev
 }
 ```
 
-## 📦 Deployment
+## Deployment
 
 - Backend: Vercel / Render / Railway
 - Database: NeonDB / Supabase / ElephantSQL
 
 ---
 
-## 📚 Project Structure
+## Project Structure
 
 ```id="x8q2ld"
 src/
@@ -204,7 +204,7 @@ src/
  └── app.ts
 ```
 
-## 👨‍💻 Author
+##  Author
 
 Built for Level-2 Web Development Assignment  
 Focused on clean architecture, security, and scalability.
